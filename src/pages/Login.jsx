@@ -14,14 +14,30 @@ const Login = () => {
 
     const [form] = Form.useForm();
 
-    const submitHandler = async (values) => {
+    const handleLogin = async (values) => {
         // console.log(values);
+        const { name, password } = values
+        const api = `/login`
         try {
             setIsLoading(true);
-            const { data } = await axios.post('/users/login', values)
+            const res = await axios({
+                method: 'post',
+                url: `http://localhost:8080/api/v1/users${api}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                data: values
+            })
             setIsLoading(false);
             message.success('Login successfully!')
-            localStorage.setItem('user', JSON.stringify({ ...data, password: '' }))
+            // localStorage.setItem('user', JSON.stringify({ ...res, password: '' }))
+            if (res && res.status === 200 && res.data) {
+                const data = res.data.data;
+
+                localStorage.setItem('user', JSON.stringify(data));
+                // console.log(data);
+
+            }
             navigate('/')
         } catch (error) {
             setIsLoading(false);
@@ -34,14 +50,27 @@ const Login = () => {
         <div>
             <div className="register-page">
                 {isLoading && <Spinner />}
-                <Form form={form} layout='vertical' onFinish={submitHandler}>
+                <Form form={form}
+                    layout='vertical'
+                    onFinish={handleLogin}>
                     <h1>Login</h1>
 
-                    <Form.Item label='Email' name='email'>
-                        <Input type='email' size='large' />
+                    <Form.Item label='Name'
+                        name={'name'}
+                    >
+                        <Input placeholder='Fill your name'
+                            size='large' />
                     </Form.Item>
-                    <Form.Item label='Password' name='password'>
-                        <Input type='password' size='large' />
+
+                    <Form.Item label='Password'
+                        name='password'
+                        rules={[{
+                            required: true,
+                            message: 'Password is required'
+                        }]}
+                    >
+                        <Input.Password placeholder='Fill your password'
+                            size='large' />
                     </Form.Item>
 
                     <div className="d-flex justify-content-between ">

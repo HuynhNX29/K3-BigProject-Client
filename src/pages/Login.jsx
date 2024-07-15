@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Form, Input, message } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -36,8 +36,8 @@ const Login = () => {
 
                 localStorage.setItem('user', JSON.stringify(data));
                 // console.log(data);
-
             }
+
             navigate('/')
         } catch (error) {
             setIsLoading(false);
@@ -45,6 +45,15 @@ const Login = () => {
             message.error('Something went wrong!')
         }
     }
+
+    //prevent for login user
+
+    useEffect(() => {
+        if (localStorage.getItem('user')) {
+            navigate('/')
+        }
+
+    }, [navigate]);
 
     return (
         <div>

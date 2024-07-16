@@ -2,8 +2,11 @@ import { Button, Form, Input, Modal, Select, message, Table, DatePicker } from '
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layouts/Layout';
 import axios from 'axios';
-import Spinner from '../components/Layouts/Spinner';
+import Spinner from '../components/Spinner';
 import moment from "moment";
+import { UnorderedListOutlined, AreaChartOutlined } from '@ant-design/icons';
+import Analytics from '../components/Analytics';
+
 
 
 // import Login from './Login';
@@ -20,6 +23,7 @@ const HomePage = () => {
     const [frequency, setFrequency] = useState('7');
     const [selectedDate, setSelectedDate] = useState([]);
     const [type, setType] = useState('all');
+    const [viewData, setViewData] = useState('table');
 
 
 
@@ -173,14 +177,29 @@ const HomePage = () => {
 
                 </div>
 
+                <div className='switch-icon'>
+                    <UnorderedListOutlined
+                        className={`mx-2 ${viewData === 'table' ? 'active-icon' : 'inactive-icon'
+                            } `}
+                        onClick={() => setViewData('table')} />
+                    <AreaChartOutlined
+                        className={`mx-2 ${viewData === 'analytics' ? 'active-icon' : 'inactive-icon'
+                            } `}
+                        onClick={() => setViewData('analytics')} />
+                </div>
+
                 <div>
+
                     <Button className='btn btn-primary'
                         onClick={() => setShowModal(true)}> Add New </Button>
                 </div>
 
             </div>
             <div className="content">
-                <Table columns={columns} dataSource={allTransactions} />
+                {viewData === 'table' ? (
+                    <Table columns={columns} dataSource={allTransactions} />)
+                    : (< Analytics allTransactions={allTransactions} />)
+                }
 
             </div>
 

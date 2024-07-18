@@ -71,7 +71,9 @@ const HomePage = () => {
                             setEditable(record)
                             setShowModal(true)
                         }} />
-                    <DeleteOutlined className='mx-2' />
+                    <DeleteOutlined className='mx-2'
+                        onClick={() => { handleDelete(record) }}
+                    />
                 </div>
             )
         }
@@ -124,7 +126,7 @@ const HomePage = () => {
 
     }, [frequency, selectedDate, type, setAllTransactions]);
 
-    //add transaction
+    //add or edit transaction
     const handleSubmit = async (values) => {
         // console.log(values);
         const apiAdd = `/add-transaction`
@@ -174,6 +176,37 @@ const HomePage = () => {
             setLoading(false)
             message.error('Failed to handle transaction!')
 
+        }
+    }
+
+
+    const handleDelete = async (record) => {
+
+        const apiDelete = `/delete-transaction`
+
+        try {
+            setLoading(true)
+
+            const resDelete = await axios({
+                method: 'POST',
+                url: `http://localhost:8080/api/v1/transactions${apiDelete}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    transactionId: record._id
+                }
+            })
+
+            setLoading(false)
+            message.error('Delete transaction successfully!')
+            await getAllTransactions();
+
+
+        } catch (error) {
+            setLoading(false)
+            console.log(error);
+            message.error('Delete transaction failed!')
         }
     }
 

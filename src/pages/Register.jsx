@@ -57,7 +57,9 @@ const Register = () => {
 
                 {isLoading && <Spinner />}
 
-                <Form form={form}
+                <Form
+                    className='register-form'
+                    form={form}
                     layout='vertical'
                     onFinish={handleRegister}>
                     <h1>Register</h1>

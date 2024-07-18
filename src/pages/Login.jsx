@@ -7,7 +7,7 @@ import Spinner from '../components/Spinner';
 
 const Login = () => {
 
-
+    const img = 'https://overcomingfinancialmisfortunes.wordpress.com/wp-content/uploads/2015/02/personal-financial-management.jpg'
     const navigate = useNavigate()
 
     const [isLoading, setIsLoading] = useState(false);
@@ -57,37 +57,47 @@ const Login = () => {
 
     return (
         <div>
-            <div className="register-page">
+            <div className="login-page">
                 {isLoading && <Spinner />}
-                <Form form={form}
-                    layout='vertical'
-                    onFinish={handleLogin}>
-                    <h1>Login</h1>
-
-                    <Form.Item label='Name'
-                        name={'name'}
-                    >
-                        <Input placeholder='Fill your name'
-                            size='large' />
-                    </Form.Item>
-
-                    <Form.Item label='Password'
-                        name='password'
-                        rules={[{
-                            required: true,
-                            message: 'Password is required'
-                        }]}
-                    >
-                        <Input.Password placeholder='Fill your password'
-                            size='large' />
-                    </Form.Item>
-
-                    <div className="d-flex justify-content-between ">
-                        <Link to='/register'>Click here to register</Link>
-                        <Button className='btn btn-primary' onClick={() => form.submit()}>Login</Button>
+                <div className='row container'>
+                    <h1>Expense Management App</h1>
+                    <div className="col-md-6">
+                        <img src={img} alt="login-img" width={"100%"} height="100%" />
                     </div>
 
-                </Form>
+                    <div className="col-md-4 login-form">
+                        <Form form={form}
+                            layout='vertical'
+                            onFinish={handleLogin}>
+                            <h1>Login</h1>
+
+                            <Form.Item label='Name'
+                                name={'name'}
+                            >
+                                <Input placeholder='Fill your name'
+                                    size='large' />
+                            </Form.Item>
+
+                            <Form.Item label='Password'
+                                name='password'
+                                rules={[{
+                                    required: true,
+                                    message: 'Password is required'
+                                }]}
+                            >
+                                <Input.Password placeholder='Fill your password'
+                                    size='large' />
+                            </Form.Item>
+
+                            <div className="d-flex justify-content-between ">
+                                <Link to='/register'>Click here to register</Link>
+                                <Button className='btn btn-primary' onClick={() => form.submit()}>Login</Button>
+                            </div>
+
+                        </Form>
+                    </div>
+                </div>
+
             </div>
         </div>
     );

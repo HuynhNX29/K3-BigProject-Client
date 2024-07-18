@@ -1,6 +1,7 @@
 import { Button, message } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
 
 const Header = () => {
 
@@ -37,14 +38,22 @@ const Header = () => {
                         <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                             <li className="nav-item">
                                 {" "}
-                                <p className='nav-link'>Hi, {" "} {loginUser && loginUser.name}!</p>{" "}
+                                <h6 className='nav-link'>
+                                    <UserOutlined /> Hi, {" "} {loginUser && loginUser.name}!
+                                </h6>
+                                {" "}
                             </li>
                             <li className='nav-item'>
-                                <Button className='btn btn-primary'
+                                {/* <Button className='btn btn-primary'
                                     onClick={logoutHandler}
                                 >
                                     Log out
-                                </Button>
+                                </Button> */}
+
+                                <h6 className='nav-link logout-item' onClick={logoutHandler}>
+                                    <LogoutOutlined /> Logout
+
+                                </h6>
                             </li>
                         </ul>
                     </div>

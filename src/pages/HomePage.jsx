@@ -4,7 +4,7 @@ import Layout from '../components/Layouts/Layout';
 import axios from 'axios';
 import Spinner from '../components/Spinner';
 import moment from "moment";
-import { UnorderedListOutlined, AreaChartOutlined } from '@ant-design/icons';
+import { UnorderedListOutlined, AreaChartOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import Analytics from '../components/Analytics';
 
 
@@ -24,6 +24,7 @@ const HomePage = () => {
     const [selectedDate, setSelectedDate] = useState([]);
     const [type, setType] = useState('all');
     const [viewData, setViewData] = useState('table');
+    const [editable, setEditable] = useState(null);
 
 
 
@@ -62,51 +63,63 @@ const HomePage = () => {
             key: 'description'
         },
         {
-            title: 'Actions'
+            title: 'Actions',
+            render: (text, record) => (
+                <div>
+                    <EditOutlined
+                        onClick={() => {
+                            setEditable(record)
+                            setShowModal(true)
+                        }} />
+                    <DeleteOutlined className='mx-2' />
+                </div>
+            )
         }
 
 
     ]
 
     //get all translations
+
+    const getAllTransactions = async () => {
+
+        const api = `/get-transaction`
+
+        try {
+            const user = JSON.parse(localStorage.getItem('user'));
+
+            setLoading(true)
+
+            // const res = await axios({
+            //     method: 'POST',
+            //     url: `http://localhost:8080/api/v1/transactions${api}`,
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     data: { userid: user._id, frequency, selectedDate, type }
+            // })
+
+            const res = await axios.post("http://localhost:8080/api/v1/transactions/get-transaction", {
+                userid: user._id,
+                frequency,
+                selectedDate,
+                type
+            });
+
+            setAllTransactions(res.data.data)
+            setLoading(false)
+            // console.log(res.data.data);
+            // message.success('All transactions loaded!')
+        } catch (error) {
+            setLoading(false);
+
+            message.error('Get all transaction failed!')
+        }
+    }
+
+
     //useEffect hook
     useEffect(() => {
-        const getAllTransactions = async () => {
-
-            const api = `/get-transaction`
-
-            try {
-                const user = JSON.parse(localStorage.getItem('user'));
-
-                setLoading(true)
-
-                // const res = await axios({
-                //     method: 'POST',
-                //     url: `http://localhost:8080/api/v1/transactions${api}`,
-                //     headers: {
-                //         'Content-Type': 'application/json',
-                //     },
-                //     data: { userid: user._id, frequency, selectedDate, type }
-                // })
-
-                const res = await axios.post("http://localhost:8080/api/v1/transactions/get-transaction", {
-                    userid: user._id,
-                    frequency,
-                    selectedDate,
-                    type
-                });
-
-                setAllTransactions(res.data.data)
-                setLoading(false)
-                // console.log(res.data.data);
-                // message.success('All transactions loaded!')
-            } catch (error) {
-                setLoading(false);
-
-                message.error('Get all transaction failed!')
-            }
-        }
-
         getAllTransactions();
 
     }, [frequency, selectedDate, type, setAllTransactions]);
@@ -114,29 +127,52 @@ const HomePage = () => {
     //add transaction
     const handleSubmit = async (values) => {
         // console.log(values);
-        const api = `/add-transaction`
+        const apiAdd = `/add-transaction`
+        const apiEdit = `/edit-transaction`
+
 
         try {
             const user = JSON.parse(localStorage.getItem('user'));
             setLoading(true)
-            const res = await axios({
-                method: 'POST',
-                url: `http://localhost:8080/api/v1/transactions${api}`,
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                data: { ...values, userid: user._id }
-            })
+            if (editable) {
+                const resEdit = await axios({
+                    method: 'POST',
+                    url: `http://localhost:8080/api/v1/transactions${apiEdit}`,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    data: {
+                        payload: {
+                            ...values,
+                            userId: user._id
+                        },
+                        transactionId: editable._id
+                    }
+                })
 
+                setLoading(false)
+                message.success('Update transaction successfully!')
+            } else {
+                const resAdd = await axios({
+                    method: 'POST',
+                    url: `http://localhost:8080/api/v1/transactions${apiAdd}`,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    data: { ...values, userid: user._id }
+                })
+
+                message.success('Add transaction successfully!')
+            }
             setLoading(false)
-            message.success('Add transaction successfully!')
-            // await getAllTransactions();
-            setShowModal(false)
 
+            await getAllTransactions();
+            setShowModal(false)
+            setEditable(null)
 
         } catch (error) {
             setLoading(false)
-            message.error('Failed to add transaction!')
+            message.error('Failed to handle transaction!')
 
         }
     }
@@ -203,7 +239,7 @@ const HomePage = () => {
 
             </div>
 
-            <Modal title='Add transaction'
+            <Modal title={editable ? 'Edit Transaction' : 'Add Transaction'}
                 open={showModal}
                 onCancel={() => setShowModal(false)}
                 footer={false}
@@ -211,6 +247,7 @@ const HomePage = () => {
                 <Form layout='vertical'
                     form={form}
                     onFinish={handleSubmit}
+                    initialValues={editable}
                 >
 
                     <Form.Item label='Amount'

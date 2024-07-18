@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/K3-BigProject-Client/static/css/main.4a52be9b.css",
+    "main.js": "/K3-BigProject-Client/static/js/main.e8e91a26.js",
+    "static/js/453.419a5d54.chunk.js": "/K3-BigProject-Client/static/js/453.419a5d54.chunk.js",
+    "index.html": "/K3-BigProject-Client/index.html",
+    "main.4a52be9b.css.map": "/K3-BigProject-Client/static/css/main.4a52be9b.css.map",
+    "main.e8e91a26.js.map": "/K3-BigProject-Client/static/js/main.e8e91a26.js.map",
+    "453.419a5d54.chunk.js.map": "/K3-BigProject-Client/static/js/453.419a5d54.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4a52be9b.css",
+    "static/js/main.e8e91a26.js"
+  ]
+}

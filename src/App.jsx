@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, HashRouter } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -6,16 +6,18 @@ import Register from './pages/Register';
 function App() {
   return (
     <div>
-      <Routes>
-        <Route path='/' element={
-          <ProtectedRoutes>
-            <HomePage />
-          </ProtectedRoutes>
-        } />
-        <Route path='/register' element={<Register />} />
-        <Route path='/login' element={<Login />} />
+      <HashRouter>
+        <Routes>
+          <Route path='/' element={
+            <ProtectedRoutes>
+              <HomePage />
+            </ProtectedRoutes>
+          } />
+          <Route path='/register' element={<Register />} />
+          <Route path='/login' element={<Login />} />
+        </Routes>
+      </HashRouter>
 
-      </Routes>
     </div>
   );
 }

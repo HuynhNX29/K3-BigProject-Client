@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, HashRouter } from 'react-router-dom';
+import { Routes, Route, Navigate, HashRouter, BrowserRouter } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -6,7 +6,7 @@ import Register from './pages/Register';
 function App() {
   return (
     <div>
-      <HashRouter>
+      {/* <BrowserRouter> */}
         <Routes>
           <Route path='/' element={
             <ProtectedRoutes>
@@ -16,7 +16,7 @@ function App() {
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
         </Routes>
-      </HashRouter>
+      {/* </BrowserRouter> */}
 
     </div>
   );

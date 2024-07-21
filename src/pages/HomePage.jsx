@@ -27,6 +27,13 @@ const HomePage = () => {
     const [editable, setEditable] = useState(null);
 
 
+    const [amountT, setAmountT] = useState('');
+    const [typeT, setTypeT] = useState(null);
+    const [categoryT, setCategoryT] = useState(null);
+    const [dateT, setDateT] = useState(Date.now());
+    const [referenceT, setTeferenceT] = useState('');
+    const [descriptionT, setDescriptionT] = useState('');
+
 
     //table data
     const columns = [
@@ -129,6 +136,8 @@ const HomePage = () => {
     //add or edit transaction
     const handleSubmit = async (values) => {
         // console.log(values);
+        // setAmountT('')
+        // console.log(amountT);
         const apiAdd = `/add-transaction`
         const apiEdit = `/edit-transaction`
 
@@ -177,6 +186,7 @@ const HomePage = () => {
             message.error('Failed to handle transaction!')
 
         }
+
     }
 
 
@@ -286,7 +296,10 @@ const HomePage = () => {
                     <Form.Item label='Amount'
                         name={'amount'}
                     >
-                        <Input type='text' />
+                        <Input type='text'
+                            // value={1111}
+                            // onChange={(e) => setAmountT(e.target.value)}
+                        />
                     </Form.Item>
 
                     <Form.Item label='Type'

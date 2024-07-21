@@ -29,10 +29,10 @@ const Analytics = ({ allTransactions }) => {
   const totalExpensePercent =
     (totalExpenseTransaction.length / totalTransaction) * 100;
 
-  const totalTurnOver = allTransactions.reduce(
-    (acc, transaction) => acc + transaction.amount,
-    0
-  );
+  // const totalTurnOver = allTransactions.reduce(
+  //   (acc, transaction) => acc + transaction.amount,
+  //   0
+  // );
 
   const totalIncomeTurnOver = allTransactions
     .filter((transaction) => transaction.type === "income")
@@ -41,6 +41,11 @@ const Analytics = ({ allTransactions }) => {
   const totalExpenseTurnOver = allTransactions
     .filter((transaction) => transaction.type === "expense")
     .reduce((acc, transaction) => acc + transaction.amount, 0);
+
+  // console.log(totalIncomeTurnOver);
+
+  const totalTurnOver = totalIncomeTurnOver - totalExpenseTurnOver;
+  // console.log(totalTurnOver);
 
   const totalIncomeTurnOverPercent =
     (totalIncomeTurnOver / totalTurnOver) * 100;
@@ -87,7 +92,7 @@ const Analytics = ({ allTransactions }) => {
             <div className="card-body">
               <h5 className="text-success">Income : {totalIncomeTurnOver}</h5>
               <h5 className="text-danger">Expense : {totalExpenseTurnOver}</h5>
-              <div>
+              {/* <div>
                 <Progress
                   type="circle"
                   strokeColor={"green"}
@@ -101,13 +106,13 @@ const Analytics = ({ allTransactions }) => {
                   className="mx-2"
                   percent={totalExpenseTurnOverPercent.toFixed(0)}
                 />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
       </div>
 
-      <div className="row mt-3">
+      <div className="row m-3">
         <div className="col-md-4">
           <h4>Categorywise Income</h4>
           {categories.map((category) => {
@@ -137,7 +142,7 @@ const Analytics = ({ allTransactions }) => {
         </div>
       </div>
 
-      <div className="row mt-3">
+      <div className="row m-3">
         <div className="col-md-4">
           <h4>Categorywise Expense</h4>
           {categories.map((category) => {
